@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+@import "http://cssicon.space/css/icons.css";
+
+
+.heart.icon{
+	color: purple;
+}
+
+.icon, .icon:before, .icon:after,
+.icon i, .icon i:before, .icon i:after{ 
+  transition: all 0.4s ease;    
+}
+
+.heart-solid.icon, 
+.heart-solid.icon:before,
+.heart-solid.icon:after{
+  background-color: pink;
+}
+
+
+.icon-bar{
+            width:100%;
+            overflow:auto;
+            transition: all 0.5s ease;
+            color: white;
+            font-size: 36px;
+           
+}
+.icon-bar:hover{
+		border: 1px dotted pink;   
+} 
+
+</style>
+
+
+
+<body>
+<h3>화장실 청결도를 평가해주세요.</h3>
+<span class="icon-bar">
+<i class="heart icon"></i>&nbsp;&nbsp;	
+<i class="heart icon"></i>&nbsp;&nbsp;
+<i class="heart icon"></i>&nbsp;&nbsp;
+<i class="heart icon"></i>&nbsp;&nbsp;
+<i class="heart icon"></i>&nbsp;&nbsp;
+<input id="call" type="submit" value="제출">
+</span>
+</body>
+
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script>
+
+var num=0;
+
+$('.icon').click(function(){
+	  $(this)
+	    .toggleClass('heart')
+	    .toggleClass('heart-solid');
+	
+ 	 	 console.log($(this).context.className);
+		if ($(this).context.className=="icon heart-solid") {
+			num+=1;
+		} else {
+			num-=1;
+		} 
+		console.log("최종: "+num);
+		
+	 
+	});
+
+
+$(function() {
+    $("#call").click(function() {
+      var str = num;
+      window.close();
+	$.ajax({
+        type:"POST",
+        url:"/webprc/main",
+	    data: {"str": str},
+	    datatype:"text",
+        success: function(data) {
+        	console.log(data);
+        },  
+        error: function(e) {
+          alert("에러발생");
+        }			
+      });
+    });
+  });
+
+
+
+</script>
+</html>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="resource.NewsMapper">
+ 	<!-- =========[2. insert]========= -->
+ 	<insert id="insertNews"  parameterType="model.vo.NewsVO">
+  		<selectKey resultType="_int" keyProperty="id" order="BEFORE">
+      		SELECT news_seq.nextval FROM dual     
+    	</selectKey>  
+    	<!-- id, writer, title, content, writedate, cnt -->
+    		INSERT INTO news VALUES(#{id},#{writer},#{title},#{content},sysdate,0)
+	</insert>
+	<!-- =========[4. delete]========= -->
+	<delete id="deleteNews"  parameterType="_int">
+    		DELETE FROM news WHERE id = #{id}
+	</delete>
+	
+	
+ 	<!-- =========[3. update]========= -->
+ 	<update id="updateNews" parameterType="model.vo.NewsVO" >
+ 			UPDATE news SET writer=#{writer}, title=#{title}, content =#{content} WHERE id=#{id}
+	</update>
+	<!-- ==[5. listone]== -->
+	<update id="listoneNews" parameterType="_int" >
+			UPDATE news SET cnt = cnt+1 WHERE id = #{id}
+	</update>
+ 	
+ 	<!-- =========[1. list]========= -->
+ 	<select id="selectNews"  resultType="model.vo.NewsVO"> 
+ 			SELECT id, title, writer, writeDate, cnt, content FROM news ORDER BY id DESC
+ 	</select>
+ 	<!-- ==[5. listone]== -->
+ 	<select id="listoneNews2" parameterType="_int" resultType="model.vo.NewsVO">
+ 			SELECT title, writer, content FROM news WHERE id = #{id}	
+ 	</select>
+ 	<!-- ==[6. listWriter]== -->
+ 	<select id="listwriterNews" parameterType="string" resultType="model.vo.NewsVO">
+ 			SELECT id, title, writer, writeDate, cnt FROM news WHERE writer =#{writer} ORDER BY id DESC
+ 	</select>
+ 	<!-- ==[7. search]== -->
+	<select id="searchtitleNews"  parameterType="string" resultType="model.vo.NewsVO">
+			SELECT id, title, writer, writeDate, cnt FROM news WHERE title LIKE '%'||#{key}||'%'	
+    </select>
+ 	<select id="searchcontentNews" parameterType="string" resultType="model.vo.NewsVO">
+ 			SELECT id, title, writer, writeDate, cnt FROM news WHERE content LIKE '%'||#{key}||'%'	
+ 	</select>
+ 	
+<!-- =========[7. search - Hashmap 사용]========= -->
+ 	<!-- 
+  	<select id="searchNews"  parameterType="hashmap" resultType="model.vo.NewsVO">
+    	select id, writer,title, content, to_char(writeDate,'yyyy mm dd hh mi') 
+    	from news 
+    	where #{searchType}   <= [여기도 #{}으로 searchType을 동적으로]
+    	like '%'||#{key}||'%'
+    </select>
+	 -->
+</mapper>
+
+
+
+
+
+
+
+

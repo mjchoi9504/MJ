@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="resource.VisitorMapper">
+ 	<select id="selectVisitor"  resultType="model.vo.VisitorVO">
+    	select id, name, to_char(writedate,'yyyy"년"mm"월"dd"일"') writedate, memo from visitor
+ 	</select>
+ 	 <select id="selectVisitor1"  resultType="model.vo.VisitorVO">
+    	select id, name, to_char(writedate,'yyyy"년"mm"월"dd"일"') writedate, memo from visitor where id <![CDATA[<]]> 5 
+ 	</select>
+  	<insert id="insertVisitor"  parameterType="model.vo.VisitorVO">
+  		<selectKey resultType="_int" keyProperty="id" order="BEFORE">
+      		select visitor_seq.nextval from dual     
+    	</selectKey>  
+    		insert into visitor (id, name, writedate, memo) values (#{id}, #{name},sysdate, #{memo})
+	</insert>
+	<select id="searchVisitor"  parameterType="java.lang.String" resultType="model.vo.VisitorVO">
+    	SELECT id, name, meetingdate, title FROM meeting WHERE title like '%'||#{key}||'%'
+    </select>
+	<delete id="deleteVisitor"  parameterType="_int"  >
+    	delete from visitor where id = #{id}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+	<Appenders> 
+		<File name="PRODUCTLOG" fileName="c:/logtest/access.csv" append="true">
+			<PatternLayout pattern="%d{yyyy,MM,dd,HH,mm},%m%n" />
+		</File>
+		<Console name="STDOUT1" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy,MM,dd,HH,mm},%m%n" />
+		</Console>
+	</Appenders>
+	
+	<Loggers>
+		<!-- =======[1]======== -->
+		<Logger name="case3" level="info">
+			<AppenderRef ref="PRODUCTLOG" /> <!-- additivity="false"있으면 Root실행x(Console실행x) -->
+		</Logger>
+		<!-- =======[2]======== -->
+		<Logger name="resource.NewsMapper" level="DEBUG">
+			<AppenderRef ref="STDOUT1" additivity="false"/>
+		</Logger>
+		<!-- =======[Root]======== -->
+		<Root level="error">
+			<AppenderRef ref="STDOUT1" />			
+		</Root>
+	</Loggers>
+</Configuration>
